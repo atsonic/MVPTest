@@ -1,0 +1,29 @@
+﻿@startuml
+
+namespace data{
+    class Model{
+        +IntReactiveProperty ReactiveCount
+        -int _maxCount
+        +int Count()
+    }
+}
+namespace ui{
+    class ViewController{
+        -Button _button
+        -Text _text
+        -InputField _inputField
+        +countUp()
+        +setCount()
+    }
+}
+
+class Presenter{
+    -Model _model
+    -ViewController _viewController
+}
+note bottom of Presenter: ModelのReactivePropertyとViewControllerのクリックイベントを購読
+
+
+Presenter -up-> data.Model
+Presenter -up-> ui.ViewController
+@enduml
