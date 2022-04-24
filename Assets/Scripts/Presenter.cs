@@ -20,8 +20,18 @@ public class Presenter : MonoBehaviour
         _viewController.OnCountUp
             .Subscribe(count => _model.Count += count);
 
+        //ビューコントローラーのインプットフィールドイベント購読
+        _viewController.OnTextInput
+            .Subscribe(text => {
+                _model.InputText = text;
+                });
+
         //モデルのスコア変更イベント購読
         _model.ReactiveCount.AsObservable().
             Subscribe(count => _viewController.setCount(count));
+        
+        //モデルのインプットフィールド変更イベント購読
+        _model.ReactiveText.AsObservable().
+            Subscribe(text => Debug.Log("テキストは" + text + "に変更されました。"));
     }
 }

@@ -19,10 +19,14 @@ namespace ui{
         private Subject<int> m_CountUp = new Subject<int>();
         public IObservable<int> OnCountUp { get { return m_CountUp; } }
 
+        //カウントアップイベント
+        private Subject<string> m_TextInput = new Subject<string>();
+        public IObservable<string> OnTextInput { get { return m_TextInput; } }
         //ボタンクリックイベント購読
         void Start()
         {
             _button.onClick.AsObservable().Subscribe(_ => CountUp()).AddTo(this);
+            _inputField.OnEndEditAsObservable().Subscribe(text => TextInput(text)).AddTo(this);
         }
 
         //カウントアップ時の処理
@@ -34,6 +38,12 @@ namespace ui{
         //テキストフィールドにカウントを表示
         public void setCount(int count){
             _textField.text = count.ToString();
+        }
+        //カウントアップ時の処理
+        private void TextInput(string text)
+        {
+            //ビューコントローラーへイベント発火
+            m_TextInput.OnNext((string)text);
         }
     }
 }
