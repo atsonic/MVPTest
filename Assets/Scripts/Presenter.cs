@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ui;
 using data;
+using utils;
 
 public class Presenter : MonoBehaviour
 {
@@ -23,15 +24,19 @@ public class Presenter : MonoBehaviour
         //ビューコントローラーのインプットフィールドイベント購読
         _viewController.OnTextInput
             .Subscribe(text => {
-                _model.InputText = text;
-                });
+                if(!utils.Validator.IsEmpty(text) && utils.Validator.IsKana(text)){
+                    _model.InputText = text;
+                }else{
+                    Debug.Log("入力文字が不正です");
+                }
+            });
 
         //モデルのスコア変更イベント購読
-        _model.ReactiveCount.AsObservable().
-            Subscribe(count => _viewController.setCount(count));
+        _model.ReactiveCount.AsObservable()
+            .Subscribe(count => _viewController.setCount(count));
         
         //モデルのインプットフィールド変更イベント購読
-        _model.ReactiveText.AsObservable().
-            Subscribe(text => Debug.Log("テキストは" + text + "に変更されました。"));
+        _model.ReactiveText.AsObservable()
+            .Subscribe(text => Debug.Log("テキストは" + text + "に変更されました。"));
     }
 }

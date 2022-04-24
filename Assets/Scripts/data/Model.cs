@@ -2,6 +2,7 @@ using UniRx;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using utils;
 
 namespace data{
     public class Model
@@ -21,9 +22,7 @@ namespace data{
         public string InputText
         {
             get { return ReactiveText.Value; }
-            set { 
-                ReactiveText.Value = value;
-            }
+            set { ReactiveText.Value = value; }
         }
         private int _maxCount = 100;
     }
